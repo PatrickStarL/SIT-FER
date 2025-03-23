@@ -5,7 +5,8 @@ Semi-supervised deep facial expression recognition (SS-DFER) has gained increasi
 
 ## Dataset & Trained Model
 [Dataset](https://huggingface.co/datasets/PatrickStarL/DATASET_SIT-FER)
-[Model](https://huggingface.co/PatrickStarL/SIT-FER)
+
+[Model](https://huggingface.co/PatrickStarL/SIT-FER/tree/main)
 
 ## Requirement
 - Python 3.7.13
