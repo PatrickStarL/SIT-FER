@@ -44,9 +44,9 @@ checkpoints/
 logs/
 experiments/
 
-# Data
-RAFdataset/
-data/
+# Data (root-level raw datasets only — do not shadow src/sit_fer/data)
+/RAFdataset/
+/data/
 *.csv
 *.pkl
 

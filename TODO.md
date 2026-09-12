@@ -3,9 +3,10 @@
 ## High Priority
 
 ### Core Functionality
-- [ ] Implement RAF-DB dataset loader in `src/sit_fer/data/raf_dataset.py`
+- [x] Implement RAF-DB dataset loader in `src/sit_fer/data/raf_dataset.py`
+- [x] Add data augmentation module (RandAugment, migrated to `src/sit_fer/data/randaugment.py`)
+- [ ] **Fix `ResNet18` feature normalization / pretrained weights mismatch** — the legacy backbone loaded MS-Celeb-pretrained weights and L2-normalized features before the classifier; `src/sit_fer/models/resnet.py` currently uses plain ImageNet weights and does not normalize. Since text/instance similarity in `Trainer` assumes normalized embeddings, this should be resolved before running real training. See `legacy/README.md` for details.
 - [ ] Implement other dataset loaders (FERPlus, AffectNet)
-- [ ] Add data augmentation module (RandAugment, etc.)
 - [ ] Implement test/inference script
 - [ ] Add model export (ONNX, TorchScript)
 
@@ -78,3 +79,10 @@
 - [x] Create setup.py
 - [x] Add .gitignore
 - [x] Create Dockerfile
+- [x] Move `Trainer` into `src/sit_fer/core/trainer.py` (was referenced but missing, breaking `import sit_fer`)
+- [x] Migrate RAF-DB dataset + RandAugment into `src/sit_fer/data/`
+- [x] Wire `scripts/train.py` into a real CLI entrypoint
+- [x] Fix `.gitignore` bug where an unscoped `data/` rule was silently excluding `src/sit_fer/data/` from git
+- [x] Untrack committed `.pyc` files from the original repo
+- [x] Archive superseded root-level files (`main.py`, `losses.py`, `test3.py`, `text.py`, `text2.py`, old `models/`, `dataset/`, `utils/`) into `legacy/`
+- [x] Consolidate `README.md`/`README_NEW.md` into a single README; move summary docs into `docs/`
