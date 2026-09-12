@@ -26,8 +26,8 @@
 ## Medium Priority
 
 ### Code Quality
-- [ ] Write unit tests for all modules
-- [ ] Add integration tests
+- [x] Write unit tests for core modules (config, models, losses, instance bank, data splitting, public API) — see `tests/`
+- [ ] Add integration tests (end-to-end training loop on a tiny synthetic dataset)
 - [ ] Set up CI/CD pipeline (GitHub Actions)
 - [ ] Add pre-commit hooks (black, flake8, mypy)
 - [ ] Type checking with mypy
@@ -86,3 +86,5 @@
 - [x] Untrack committed `.pyc` files from the original repo
 - [x] Archive superseded root-level files (`main.py`, `losses.py`, `test3.py`, `text.py`, `text2.py`, old `models/`, `dataset/`, `utils/`) into `legacy/`
 - [x] Consolidate `README.md`/`README_NEW.md` into a single README; move summary docs into `docs/`
+- [x] Add `LICENSE` file (MIT, matching the badge/claim already in README)
+- [x] Fix `PartialLoss.confidence_update` hardcoding `.cuda()` — found via the new test suite; it crashed on any CPU-only machine. Now uses `.to(temp_un_conf.device)`.

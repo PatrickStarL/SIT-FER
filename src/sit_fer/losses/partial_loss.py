@@ -44,7 +44,7 @@ class PartialLoss(nn.Module):
         """Update confidence matrix with EMA"""
         with torch.no_grad():
             _, prot_pred = (temp_un_conf * batchY).max(dim=1)
-            pseudo_label = F.one_hot(prot_pred, batchY.shape[1]).float().cuda().detach()
+            pseudo_label = F.one_hot(prot_pred, batchY.shape[1]).float().to(temp_un_conf.device).detach()
             self.confidence[batch_index, :] = (
                 self.conf_ema_m * self.confidence[batch_index, :] +
                 (1 - self.conf_ema_m) * pseudo_label
