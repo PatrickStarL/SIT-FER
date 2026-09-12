@@ -1,0 +1,98 @@
+# Base configuration for SIT-FER
+
+# Model configuration
+model:
+  name: "resnet18"
+  num_classes: 7
+  feature_dim: 512
+
+# Text encoder configuration
+text_encoder:
+  vocab_size: 7
+  d_model: 512
+  nhead: 8
+  num_layers: 3
+  context_length: 77
+
+# Training configuration
+training:
+  epochs: 80
+  start_epoch: 1
+  batch_size: 16
+  num_workers: 8
+
+  # Learning rates
+  lr: 0.0001
+  lr_text: 0.0001
+
+  # EMA decay
+  ema_decay: 0.999
+
+  # Temperature
+  temperature: 0.1
+
+  # Iterations per epoch
+  train_iteration: 800
+
+  # Loss weights
+  loss_weights:
+    supervised: 0.4
+    text: 0.4
+    consistency: 0.2
+
+  # Pseudo-label configuration
+  pseudo_label:
+    threshold: 0.75
+    fusion_weights:
+      semantic: 0.3
+      text: 0.2
+      instance: 0.5
+    fusion_weights_early:  # Before epoch 15
+      semantic: 0.6
+      text: 0.4
+      instance: 0.0
+    epoch_threshold: 15
+
+# Semi-supervised configuration
+ssl:
+  n_labeled: 5000
+
+# Dataset configuration
+dataset:
+  name: "RAF-DB"
+  train_root: "./RAFdataset/images/train"
+  test_root: "./RAFdataset/images/test"
+  label_train: "./RAFdataset/labels/RAF_train_label2.txt"
+  label_test: "./RAFdataset/labels/RAF_test_label2.txt"
+
+  # Augmentation
+  image_size: 224
+  mean: [0.485, 0.456, 0.406]
+  std: [0.229, 0.224, 0.225]
+
+# Emotion labels
+emotions:
+  - "surprise"
+  - "fear"
+  - "disgust"
+  - "happy"
+  - "sad"
+  - "angry"
+  - "neutral"
+
+# Instance bank configuration
+instance_bank:
+  dim: 512
+  size: 5000  # Should match n_labeled
+
+# Experiment configuration
+experiment:
+  output_dir: "./experiments"
+  save_freq: 10
+  log_freq: 100
+  seed: 5
+
+# Device configuration
+device:
+  gpu: "0"
+  use_cuda: true
