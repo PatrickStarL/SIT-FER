@@ -95,6 +95,17 @@ RAFdataset/
     └── RAF_test_label2.txt
 ```
 
+### Pretrained Backbone (optional but recommended)
+
+The original SIT-FER paper initializes the ResNet-18 backbone from a **face-recognition-pretrained checkpoint** (ResNet-18 pretrained on MS-Celeb-1M), not plain ImageNet weights. This checkpoint is not distributed with this repo — you need to source it yourself. Once you have it, point the config at it:
+
+```yaml
+model:
+  pretrained_path: /path/to/resnet18_msceleb.pth
+```
+
+If left as `null`, the backbone falls back to ImageNet-pretrained `torchvision` weights instead. See [`legacy/README.md`](legacy/README.md) for details on the expected checkpoint format.
+
 ## 🏋️ Training
 
 ### Basic Training

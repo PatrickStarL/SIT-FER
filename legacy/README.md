@@ -16,6 +16,8 @@ The functionality here has been superseded by `src/sit_fer/`:
 | `utils/generate_labelset.py` | Unused/dead code in the original repo (imported but never called) |
 | `utils/label2txt.py`, `utils/rename.py` | One-off personal scripts with hard-coded local paths; not reusable |
 
-## Known caveat carried over from the original code
+## Resolved: MS-Celeb-1M pretrained backbone
 
-`legacy/models/backbone.py`'s `ResNet_18` loads a **face-recognition-pretrained** checkpoint (`resnet18_msceleb.pth`, MS-Celeb-1M pretraining) rather than plain ImageNet weights, and L2-normalizes features before the classifier. The refactored `src/sit_fer/models/resnet.py::ResNet18` currently uses ImageNet-pretrained `torchvision` weights and does **not** normalize features by default. Since the three-level fusion (text/instance similarity) assumes normalized embeddings, this is worth revisiting before running real training — see `TODO.md`.
+`legacy/models/backbone.py`'s `ResNet_18` loaded a **face-recognition-pretrained** checkpoint (`resnet18_msceleb.pth`, MS-Celeb-1M pretraining) rather than plain ImageNet weights, and L2-normalized features before the classifier. `src/sit_fer/models/resnet.py::ResNet18` now replicates this: pass a checkpoint path via `model.pretrained_path` in `configs/base.yaml` (or the `pretrained_path=` constructor arg) and it loads and L2-normalizes features the same way. When `pretrained_path` is not set, it falls back to ImageNet-pretrained `torchvision` weights instead.
+
+**This repo still does not include the `resnet18_msceleb.pth` file itself** — it was never distributed with the original SIT-FER repo either. You need to source it yourself (it's commonly shared across RAF-DB/FER papers that build on Self-Cure-Network-style backbones) and point `model.pretrained_path` at your local copy.

@@ -1,12 +1,41 @@
 """Smoke tests for model forward passes (shapes only, not accuracy)"""
 
 import torch
+from torchvision.models import resnet18
 
 from sit_fer.models import ResNet18, TextEncoder, tokenize
 
 
 def test_resnet18_output_shapes():
     model = ResNet18(num_classes=7, feature_dim=512, pretrained=False)
+    x = torch.randn(2, 3, 224, 224)
+
+    logits, features = model(x)
+
+    assert logits.shape == (2, 7)
+    assert features.shape == (2, 512)
+
+
+def test_resnet18_features_are_l2_normalized():
+    model = ResNet18(num_classes=7, feature_dim=512, pretrained=False)
+    x = torch.randn(2, 3, 224, 224)
+
+    _, features = model(x)
+
+    norms = features.norm(dim=1)
+    assert torch.allclose(norms, torch.ones(2), atol=1e-5)
+
+
+def test_resnet18_loads_face_pretrained_checkpoint(tmp_path):
+    # Simulate the MS-Celeb-1M-style checkpoint format: a plain torchvision
+    # ResNet-18 state dict wrapped under 'state_dict', with a DataParallel
+    # 'module.' prefix on every key.
+    reference = resnet18(pretrained=False)
+    wrapped_state_dict = {f"module.{k}": v for k, v in reference.state_dict().items()}
+    checkpoint_path = tmp_path / "resnet18_msceleb.pth"
+    torch.save({"state_dict": wrapped_state_dict}, checkpoint_path)
+
+    model = ResNet18(num_classes=7, feature_dim=512, pretrained_path=str(checkpoint_path))
     x = torch.randn(2, 3, 224, 224)
 
     logits, features = model(x)

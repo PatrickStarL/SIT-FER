@@ -5,6 +5,12 @@ model:
   name: "resnet18"
   num_classes: 7
   feature_dim: 512
+  dropout: 0.5
+  # Path to a face-recognition-pretrained checkpoint (ResNet-18 pretrained on
+  # MS-Celeb-1M), matching the original SIT-FER paper's backbone. This file is
+  # NOT bundled with this repo — download it separately and point this at it.
+  # When null, falls back to ImageNet-pretrained torchvision weights.
+  pretrained_path: null
 
 # Text encoder configuration
 text_encoder:

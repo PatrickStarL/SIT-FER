@@ -65,7 +65,9 @@ class Trainer:
         # Vision model
         self.model = ResNet18(
             num_classes=self.config.get('model.num_classes'),
-            feature_dim=self.config.get('model.feature_dim')
+            feature_dim=self.config.get('model.feature_dim'),
+            pretrained_path=self.config.get('model.pretrained_path'),
+            dropout=self.config.get('model.dropout', 0.5),
         ).to(self.device)
 
         # Text model

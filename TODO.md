@@ -5,7 +5,7 @@
 ### Core Functionality
 - [x] Implement RAF-DB dataset loader in `src/sit_fer/data/raf_dataset.py`
 - [x] Add data augmentation module (RandAugment, migrated to `src/sit_fer/data/randaugment.py`)
-- [ ] **Fix `ResNet18` feature normalization / pretrained weights mismatch** — the legacy backbone loaded MS-Celeb-pretrained weights and L2-normalized features before the classifier; `src/sit_fer/models/resnet.py` currently uses plain ImageNet weights and does not normalize. Since text/instance similarity in `Trainer` assumes normalized embeddings, this should be resolved before running real training. See `legacy/README.md` for details.
+- [x] Fix `ResNet18` feature normalization / pretrained weights mismatch — `src/sit_fer/models/resnet.py` now supports loading an MS-Celeb-1M-style checkpoint via `model.pretrained_path` and L2-normalizes features before the classifier, matching the original backbone. The actual `resnet18_msceleb.pth` file is still not bundled with this repo (never was) — see `legacy/README.md`.
 - [ ] Implement other dataset loaders (FERPlus, AffectNet)
 - [ ] Implement test/inference script
 - [ ] Add model export (ONNX, TorchScript)
